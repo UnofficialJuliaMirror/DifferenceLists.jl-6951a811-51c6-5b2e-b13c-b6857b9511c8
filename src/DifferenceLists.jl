@@ -1,11 +1,22 @@
 module DifferenceLists
 
-export dl, concat
+export DL, dl, concat, push, add
 
 """
     DL(func)
 
 Given function `func`, construct a difference list.
+
+Difference lists are immutable, concatenate and prepend in constant time, and iterate in time N.
+
+# Examples
+```jldoctest
+julia> [x for x = dl(1, 2, 3)]
+3-element Array{Int64,1}:
+ 1
+ 2
+ 3
+```
 """
 struct DL
     func
@@ -14,7 +25,7 @@ end
 """
     dl(items...)::DL
 
-Construct a difference list of `items`. Difference lists are immutable, concatenate and prepend in constant time, and iterate in time N.
+Construct a difference list of `items`.
 
 # Examples
 ```jldoctest
@@ -30,16 +41,6 @@ dl(1, 2, 3)
 julia> dl(1, dl(2, 3), 4)
 dl(1, dl(2, 3), 4)
 ```
-
-A difference list itself can be used as shorthand for concat.
-
-See also: [`concat`](@ref)
-
-# Examples
-```jldoctest
-julia> dl(1, 2)(dl(3, 4), dl(5, 6, 7))
-dl(1, 2, 3, 4, 5, 6, 7)
-```
 """
 function dl(items...)
   if length(items) == 0
@@ -48,6 +49,33 @@ function dl(items...)
       DL(last -> (items[1], length(items) == 1 ? last : (2, items, last)))
   end
 end
+
+"""
+    push(item, dl::DL)
+
+Push an item onto the front of a difference list.
+
+# Examples
+```jldoctest
+julia> push(1, push(2, dl()))
+dl(1, 2)
+
+```
+"""
+push(item, dl::DL) = DL(last -> (item, dl.func(last)))
+
+"""
+    add(item, dl::DL)
+
+Add an item onto the end of a difference list.
+
+# Examples
+```jldoctest
+julia> add(2, add(1, dl()))
+dl(1, 2)
+```
+"""
+add(item, dl::DL) = DL(last -> dl.func((item, last)))
 
 """
     concat(lists::DL...)::DL
@@ -60,6 +88,9 @@ See also: [`dl`](@ref)
 ```jldoctest
 julia> concat(dl(1, 2), dl(3, 4))
 dl(1, 2, 3, 4)
+
+julia> concat(dl(1), dl(2))
+dl(1, 2)
 ```
 """
 concat(lists::DL...) = DL(last -> foldr((x, y) -> x.func(y), lists, init=last))
@@ -69,7 +100,7 @@ concat(lists::DL...) = DL(last -> foldr((x, y) -> x.func(y), lists, init=last))
 
 A difference list itself can be used as shorthand for concat.
 
-See also: [`dl`](@ref)
+See also: [`dl`](@ref), [`concat`](@ref)
 
 # Examples
 ```jldoctest
@@ -81,7 +112,7 @@ dl(1, 2, 3, 4, 5, 6, 7)
 
 # Iteration support
 Base.iterate(d::DL) = d.func(nothing)
-Base.iterate(::DL, cur::Tuple{Any, Any}) = cur[2]
+Base.iterate(::DL, cur::Tuple{Any, Any}) = cur
 Base.iterate(::DL, (index, items, last)::Tuple{Int, Tuple, Any}) =
     index > length(items) ? last : (items[index], (index + 1, items, last))
 Base.iterate(::DL, ::Nothing) = nothing
