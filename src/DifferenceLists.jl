@@ -1,6 +1,6 @@
 module DifferenceLists
 
-export DL, dl, concat, push, add
+export DL, dl, concat, push, pushfirst
 
 """
     DL(func)
@@ -53,29 +53,28 @@ end
 """
     push(item, dl::DL)
 
+Push an item onto the end of a difference list.
+
+# Examples
+```jldoctest
+julia> push(2, push(1, dl(7, 8, 9)))
+dl(7, 8, 9, 1, 2)
+```
+"""
+push(item, dl::DL) = DL(last -> dl.func((item, last)))
+
+"""
+    pushfirst(item, dl::DL)
+
 Push an item onto the front of a difference list.
 
 # Examples
 ```jldoctest
-julia> push(1, push(2, dl()))
-dl(1, 2)
-
+julia> pushfirst(1, pushfirst(2, dl(7, 8, 9)))
+dl(1, 2, 7, 8, 9)
 ```
 """
-push(item, dl::DL) = DL(last -> (item, dl.func(last)))
-
-"""
-    add(item, dl::DL)
-
-Add an item onto the end of a difference list.
-
-# Examples
-```jldoctest
-julia> add(2, add(1, dl()))
-dl(1, 2)
-```
-"""
-add(item, dl::DL) = DL(last -> dl.func((item, last)))
+pushfirst(item, dl::DL) = DL(last -> (item, dl.func(last)))
 
 """
     concat(lists::DL...)::DL
