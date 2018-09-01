@@ -2,7 +2,7 @@
 
 Difference lists are simple, immutable, concatenate and prepend in constant time, and iterate in time N.
 
-This small library provides them for Julia.
+This small library provides them for Julia, so you can use them when you need to accumulate a list incrementally. Since difference lists are immutable, you can easily reuse common parts.
 
 To create a difference list, use the dl(items...) function like this:
 
