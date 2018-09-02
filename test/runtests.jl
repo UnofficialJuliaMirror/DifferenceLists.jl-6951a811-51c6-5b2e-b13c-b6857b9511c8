@@ -1,4 +1,5 @@
 using DifferenceLists
+using Test
 
 @test collect(dl(1, 2, 3)) == [1,2,3]
 @test collect(dl()) == []
