@@ -1,6 +1,6 @@
 module DifferenceLists
 
-export DL, dl, concat, push, pushfirst
+export DL, dl, concat, push, pushfirst, todl
 
 """
     DL(func)
