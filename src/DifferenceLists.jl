@@ -28,6 +28,7 @@ struct DL
 end
 
 """
+    dl()::DL
     dl(items...)::DL
 
 Construct a difference list of `items`.
@@ -47,18 +48,13 @@ julia> dl(1, dl(2, 3), 4)
 dl(1, dl(2, 3), 4)
 ```
 """
-function dl(items...)
-  if length(items) == 0
-      DL(last -> last)
-  else
-      DL(last -> (items[1], length(items) == 1 ? last : (2, items, last)))
-  end
-end
+dl() = DL(last -> last)
+dl(items...) = todl(items)
 
 """
     todl(items)
 
-Create a difference list from something that you can iterate on
+Create a difference list from something you can index
 
 # Examples
 ```jldoctest
