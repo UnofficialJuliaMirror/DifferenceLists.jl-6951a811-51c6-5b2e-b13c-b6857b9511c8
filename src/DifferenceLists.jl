@@ -50,6 +50,8 @@ function dl(items...)
   end
 end
 
+todl(items::Array) = DL(last -> (items[1], length(items) == 1 ? last : (2, items, last)))
+
 """
     push(item, dl::DL)
 
@@ -112,7 +114,7 @@ dl(1, 2, 3, 4, 5, 6, 7)
 # Iteration support
 Base.iterate(d::DL) = d.func(nothing)
 Base.iterate(::DL, cur::Tuple{Any, Any}) = cur
-Base.iterate(::DL, (index, items, last)::Tuple{Int, Tuple, Any}) =
+Base.iterate(::DL, (index, items, last)::Tuple{Int, Union{Tuple, Array}, Any}) =
     index > length(items) ? last : (items[index], (index + 1, items, last))
 Base.iterate(::DL, ::Nothing) = nothing
 Base.IteratorSize(::DL) = Base.SizeUnknown()
