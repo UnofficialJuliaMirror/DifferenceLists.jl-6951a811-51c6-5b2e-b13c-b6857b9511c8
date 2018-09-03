@@ -1,6 +1,12 @@
 # Difference Lists for Julia, (C) 2018 Bill Burdick (William R. Burdick Jr.)
 
-Difference lists are simple, immutable, concatenate and prepend in constant time, and iterate in time N.
+Difference lists are
+
+* *highly efficient*
+* *simple*
+* *immutable*
+* *concatenate, prepend, and append in* **constant time**
+* *iterate in* **time N** (like arrays)
 
 This small library provides them for Julia, so you can use them when you need to accumulate a list incrementally. Since difference lists are immutable, you can easily reuse common parts.
 

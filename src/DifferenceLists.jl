@@ -12,7 +12,7 @@ export DL, dl, concat, push, pushfirst, todl
 
 Given function `func`, construct a difference list.
 
-Difference lists are immutable, concatenate and prepend in constant time, and iterate in time N.
+Difference lists are highly efficient, immutable, concatenate and prepend in constant time, and iterate in time N.
 
 # Examples
 ```jldoctest
