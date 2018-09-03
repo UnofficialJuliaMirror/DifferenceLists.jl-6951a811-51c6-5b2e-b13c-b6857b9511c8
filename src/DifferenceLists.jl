@@ -1,3 +1,8 @@
+"""
+DifferenceLists, (c) 2018, Bill Burdick (William R. Burdick Jr.)
+MIT Licensed (see LICENSE file).
+"""
+
 module DifferenceLists
 
 export DL, dl, concat, push, pushfirst, todl
