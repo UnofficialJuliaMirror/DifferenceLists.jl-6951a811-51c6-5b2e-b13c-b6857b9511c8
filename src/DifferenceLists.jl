@@ -63,6 +63,7 @@ dl(1, 2, 3)
 ```
 """
 todl(items) = DL(last -> (items[1], length(items) == 1 ? last : (2, items, last)))
+todl(items::DL) = items
 
 """
     push(item, dl::DL)
