@@ -54,7 +54,7 @@ dl(items...) = todl(items)
 """
     todl(items)
 
-Create a difference list from something you can index
+Create a difference list from something you can iterate over
 
 # Examples
 ```jldoctest
@@ -62,8 +62,16 @@ julia> todl([1, 2, 3])
 dl(1, 2, 3)
 ```
 """
-todl(items) = DL(last -> (items[1], length(items) == 1 ? last : (2, items, last)))
-todl(items::DL) = items
+todl(items) = DL(last -> nextFor(items, iterate(items), last))
+todl(dl::DL) = dl
+
+"""
+    nextFor(items, state, last)
+
+Compute the next iteration value for an embedded collection.
+"""
+nextFor(items, ::Nothing, last) = last
+nextFor(items, (item, state), last) = item, (items, state, last)
 
 """
     push(item, dl::DL)
@@ -127,9 +135,8 @@ dl(1, 2, 3, 4, 5, 6, 7)
 # Iteration support
 Base.iterate(d::DL) = d.func(nothing)
 Base.iterate(::DL, cur::Tuple{Any, Any}) = cur
-Base.iterate(::DL, (index, items, last)::Tuple{Int, Any, Any}) =
-    index > length(items) ? last : (items[index], (index + 1, items, last))
-Base.iterate(::DL, ::Nothing) = nothing
+Base.iterate(::DL, (items, state, last)::Tuple{Any, Any, Any}) = nextFor(items, iterate(items, state), last)
+#Base.iterate(::DL, ::Nothing) = nothing
 Base.IteratorSize(::DL) = Base.SizeUnknown()
 
 # value display support
