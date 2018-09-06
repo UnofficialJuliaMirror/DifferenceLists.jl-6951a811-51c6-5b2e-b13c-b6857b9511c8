@@ -97,7 +97,7 @@ julia> pushfirst(1, pushfirst(2, dl(7, 8, 9)))
 dl(1, 2, 7, 8, 9)
 ```
 """
-pushfirst(dl::DL, items...) = concat(dl, todl(items))
+pushfirst(dl::DL, items...) = concat(todl(items), dl)
 
 """
     concat(lists::DL...)::DL
