@@ -131,7 +131,7 @@ julia> dl(1, 2)(dl(3, 4), dl(5, 6, 7))
 dl(1, 2, 3, 4, 5, 6, 7)
 ```
 """
-(a::DL)(lists...) = concat(map(todl, lists)...)
+(a::DL)(lists...) = concat(a, map(todl, lists)...)
 
 # Iteration support
 Base.iterate(d::DL) = d.func(nothing)
