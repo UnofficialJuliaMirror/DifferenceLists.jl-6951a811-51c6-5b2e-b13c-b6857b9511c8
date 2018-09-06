@@ -26,13 +26,17 @@ julia> dl(1, dl(2, 3), 4)
 dl(1, dl(2, 3), 4)
 ```
 
-
 Difference lists can iterate so you can easily convert them to collections.
 
-# Examples
 ```jldoctest
 julia> [x for x = dl(1, 2, 3)]
 3-element Array{Int64,1}:
+ 1
+ 2
+ 3
+
+julia> collect(dl(1,2,3))
+3-element Array{Any,1}:
  1
  2
  3
@@ -50,3 +54,14 @@ You can use a difference list itself as shorthand for concat, like this:
 julia> dl(1, 2)(dl(3, 4), dl(5, 6, 7))
 dl(1, 2, 3, 4, 5, 6, 7)
 ```
+
+# API
+
+* `dl()`: create an empty difference list
+* `dl(items...)`: create a difference list from several elements
+* `todl(iteratable)`: create a difference list from something you can iterate on
+* `concat(lists...)`: concatenate several difference lists
+* `push(item, list::DL)`: make a difference list from list and item added to the end of it
+* `pushfirst(item, list::DL)`: make a difference list from list and item added to the start of it
+
+Difference lists can iterate, so you can use them with collect(), in for loops, etc.
