@@ -65,6 +65,5 @@ dl(1, 2, 3, 4, 5, 6, 7)
 * `push(item, list::DL)`: make a difference list from list and item added to the end of it
 * `pushfirst(item, list::DL)`: make a difference list from list and item added to the start of it
 * `(aList)(iter...)`: concatenate a difference list with one or more other difference lists or iterables
-* `list1 * list2`: concatenate two difference lists
 
 Difference lists can iterate, so you can use them in for loops, with collect(), etc.
