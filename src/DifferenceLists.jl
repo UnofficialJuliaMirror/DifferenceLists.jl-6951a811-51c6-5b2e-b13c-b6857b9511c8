@@ -84,7 +84,7 @@ julia> push(2, push(1, dl(7, 8, 9)))
 dl(7, 8, 9, 1, 2)
 ```
 """
-push(item, dl::DL) = DL(last -> dl.func((item, last)))
+push(dl::DL, items...) = concat(dl, todl(items))
 
 """
     pushfirst(item, dl::DL)
@@ -97,7 +97,7 @@ julia> pushfirst(1, pushfirst(2, dl(7, 8, 9)))
 dl(1, 2, 7, 8, 9)
 ```
 """
-pushfirst(item, dl::DL) = DL(last -> (item, dl.func(last)))
+pushfirst(dl::DL, items...) = concat(dl, todl(items))
 
 """
     concat(lists::DL...)::DL
