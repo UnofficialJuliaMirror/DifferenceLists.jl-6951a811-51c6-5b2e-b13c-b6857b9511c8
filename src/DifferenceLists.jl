@@ -116,6 +116,7 @@ dl(1, 2)
 ```
 """
 concat(lists::DL...) = DL(last -> foldr((x, y) -> x.func(y), lists, init=last))
+dlconcat(lists...) = DL(last -> foldr((x, y) -> x.func(y), map(todl, lists), init=last))
 
 """
     (a::DL)(lists::DL...)::DL
@@ -130,7 +131,7 @@ julia> dl(1, 2)(dl(3, 4), dl(5, 6, 7))
 dl(1, 2, 3, 4, 5, 6, 7)
 ```
 """
-(a::DL)(lists::DL...) = concat(a, lists...)
+(a::DL)(lists...) = concat(map(todl, lists)...)
 
 # Iteration support
 Base.iterate(d::DL) = d.func(nothing)
