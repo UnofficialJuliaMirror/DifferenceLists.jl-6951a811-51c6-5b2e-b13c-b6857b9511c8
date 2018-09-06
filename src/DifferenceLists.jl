@@ -136,7 +136,7 @@ dl(1, 2, 3, 4, 5, 6, 7)
 Base.iterate(d::DL) = d.func(nothing)
 Base.iterate(::DL, cur::Tuple{Any, Any}) = cur
 Base.iterate(::DL, (items, state, last)::Tuple{Any, Any, Any}) = nextFor(items, iterate(items, state), last)
-#Base.iterate(::DL, ::Nothing) = nothing
+Base.iterate(::DL, ::Nothing) = nothing
 Base.IteratorSize(::DL) = Base.SizeUnknown()
 
 # value display support
