@@ -5,7 +5,7 @@ MIT Licensed (see LICENSE file).
 
 module DifferenceLists
 
-export DL, dl, concat, push, pushfirst, todl
+export DL, dl, concat, push, pushfirst, todl, dlconcat
 
 """
     DL(func)
